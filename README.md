@@ -44,11 +44,22 @@ Five experiments across GPT-2 and Qwen3-14B. The signal is real (Cohen's d = 1.1
 
 ## Scientific imaging
 
-**[czi_processing](https://github.com/maykef/czi_processing)** — 200GB+ Zeiss confocal pipeline.  
-CZI → OME-Zarr with 48-worker parallel stitching, PCIe 5.0 NVMe-optimised Zarr writing, correct 3D physical scaling from microscope metadata. 211GB processed in 15 minutes.
+**[czi_processing](https://github.com/maykef/czi_processing)** — End-to-end pipeline for large Zeiss confocal datasets.  
+Raw `.czi` mosaic files from a Zeiss confocal arrive as hundreds of overlapping tiles per Z-slice across multiple channels. This pipeline stitches them into full-resolution planes using weighted blending across 48 parallel workers — enough to saturate a 32-core Threadripper without thrashing 128GB of RAM. Stitched planes write directly to multiscale OME-Zarr using large-chunk Zarr writing tuned for PCIe 5.0 NVMe sequential throughput. Z-axis physical scaling is extracted automatically from microscope metadata (0.65 µm XY, 2.0 µm Z-step) and applied at load time in Napari, so the 3D volume renders with correct proportions without manual correction. The full pipeline runs from a single command.
 
-**[celltron](https://github.com/maykef/celltron)** — 3D anisotropy analysis.  
-GPU-accelerated structure tensor computation (26 directions), FA/CL/CS/CP measures, Apple MPS backend, CPU-parallelised eigen-decomposition.
+| Dataset | Stitching | Zarr conversion | Total |
+|---|---|---|---|
+| 62 GB | 1.0 min | 2.7 min | 3.7 min |
+| 211 GB | 3.7 min | 11.5 min | 15.4 min |
+
+**[celltron](https://github.com/maykef/celltron)** — 3D anisotropy analysis for microscopy volumes.  
+Quantifies local directional structure in 3D tissue volumes using the structure tensor method. Gradients are computed in 26 spatial directions (faces, edges, and corners of the voxel neighbourhood) via separable 3D Sobel kernels running on Apple MPS. The resulting 3×3 tensors are eigen-decomposed in parallel across CPU processes using NumPy backed by Apple's Accelerate framework, with per-process BLAS thread pinning to prevent oversubscription. From the ordered eigenvalues (λ1 ≥ λ2 ≥ λ3) the pipeline computes four standard anisotropy measures — Fractional Anisotropy (FA), Linear (CL), Planar (CP), and Spherical (CS) — following Westin et al. conventions. Output is float16 compressed NPZ with principal direction vectors, ready for visualisation in Napari.
+
+| Volume | Processing time | Memory |
+|---|---|---|
+| 256³ voxels | 12.3 s | 2.1 GB |
+| 512³ voxels | 98.7 s | 8.4 GB |
+| 1024³ voxels | 847 s | 32.1 GB |
 
 ---
 
