@@ -1,7 +1,7 @@
 # Mayke De Freitas Santos
 
 I work on inference efficiency and scientific imaging infrastructure.  
-Cambridge, UK · [maykef.info](https://maykef.info) [LinkedIn](https://www.linkedin.com/in/mayke-santos-755960360/)
+Cambridge, UK · [maykef.info](https://maykef.info)            [LinkedIn](https://www.linkedin.com/in/mayke-santos-755960360/)
 
 ---
 
