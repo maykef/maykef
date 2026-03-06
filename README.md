@@ -42,6 +42,16 @@ Five experiments across GPT-2 and Qwen3-14B. The signal is real (Cohen's d = 1.1
 
 ---
 
+## Scientific imaging
+
+**[czi_processing](https://github.com/maykef/czi_processing)** — 200GB+ Zeiss confocal pipeline.  
+CZI → OME-Zarr with 48-worker parallel stitching, PCIe 5.0 NVMe-optimised Zarr writing, correct 3D physical scaling from microscope metadata. 211GB processed in 15 minutes.
+
+**[celltron](https://github.com/maykef/celltron)** — 3D anisotropy analysis.  
+GPU-accelerated structure tensor computation (26 directions), FA/CL/CS/CP measures, Apple MPS backend, CPU-parallelised eigen-decomposition.
+
+---
+
 ## Background
 
 I've spent several years procuring the exact instruments that generate the data above — confocal microscopes, imaging systems, lab infrastructure at the University of Cambridge. It turns out to be an unusual way to understand both the hardware and what researchers actually need from it.
